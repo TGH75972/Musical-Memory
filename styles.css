@@ -1,0 +1,72 @@
+body{
+    background-color: black;
+}
+.container{
+    margin: 130px auto;
+    background-color: white;
+    height: 300px;
+    width: 600px;
+    border-radius: 10px;
+}
+
+#choice-red, #choice-blue, #choice-green, #choice-yellow, #choice-pink, #choice-purple, #pi, #theta{
+    background-color: red;
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    top: 480px;
+    left: 50px;
+    border-radius: 10px;
+    border: 2px solid black;
+}
+
+#choice-blue{
+    background-color: blue;
+    left: 200px;
+}
+
+#choice-green{
+    background-color: greenyellow;
+    left: 350px;
+}
+
+#choice-yellow{
+background-color: yellow;
+left: 500px;
+}
+
+#choice-pink{
+ background-color: pink;
+ left: 650px;
+}
+
+#choice-purple{
+background-color: purple;
+left: 800px;
+}
+
+#pi, #theta{
+    left: 950px;
+    background-color: white;
+    color: black;
+    font-size: 40px;
+}
+
+#theta{
+    left: 1100px;
+}
+
+#start{
+    margin-left: 250px;
+    margin-top: 100px;
+    border-radius: 10px;
+    height: 100px;
+    font-size: 40px;
+    border: 2px solid white;
+    width: 100px;
+    background-color: black;
+}
+
+button:hover{
+    cursor: pointer;
+}
