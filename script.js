@@ -11,12 +11,23 @@ const colorButtons = [
     document.getElementById('choice-yellow'),
     document.getElementById('choice-pink'),
     document.getElementById('choice-purple'),
-    document.getElementById('choice-pi'),
-    document.getElementById('choice-theta')
+    document.getElementById('pi'),
+    document.getElementById('theta')
 ];
 
 const colorNames = ['red', 'blue', 'green', 'yellow', 'pink', 'purple'];
 const symbols = ['π', 'θ'];
+
+const sounds = {
+    red: new Audio('red.mp3'),
+    blue: new Audio('blue.mp3'),
+    green: new Audio('green.mp3'),
+    yellow: new Audio('yellow.mp3'),
+    pink: new Audio('pink.mp3'),
+    purple: new Audio('purple.mp3'),
+    pi: new Audio('pi.mp3'),
+    theta: new Audio('theta.mp3')
+};
 
 function startGame() {
     document.getElementById('start').style.display = 'none';
@@ -24,17 +35,25 @@ function startGame() {
 }
 
 function displayCountdown() {
-    const container = document.getElementById('container');
-    container.style.fontFamily = 'Verdana';
-    container.innerHTML = '3';
+    const countdown = document.createElement('div');
+    countdown.className = 'countdown';
+    countdown.style.fontFamily = 'Verdana';
+    countdown.style.fontSize = '50px';
+    countdown.style.color = 'white';
+    countdown.style.backgroundColor = 'black'; // Add black background
+    countdown.style.padding = '10px'; // Add padding
+    countdown.style.borderRadius = '10px'; // Add border radius
+    countdown.innerHTML = '3';
+    document.getElementById('container').appendChild(countdown);
+
     setTimeout(() => {
-        container.innerHTML = '2';
+        countdown.innerHTML = '2';
         setTimeout(() => {
-            container.innerHTML = '1';
+            countdown.innerHTML = '1';
             setTimeout(() => {
-                container.innerHTML = 'Begin!';
+                countdown.innerHTML = 'Begin!';
                 setTimeout(() => {
-                    container.innerHTML = '';
+                    countdown.style.display = 'none';
                     generateSequence();
                     displaySequence();
                 }, 1000);
@@ -47,7 +66,7 @@ function generateSequence() {
     sequence = [];
     let itemPool = [...colorNames];
     if (round > 6) {
-        itemPool = [...colorNames, ...symbols, 'π', 'θ', 'π', 'θ']; // Increase chances for symbols
+        itemPool = [...colorNames, ...symbols, 'π', 'θ', 'π', 'θ'];
         round = 1;
     }
     for (let i = 0; i < round; i++) {
@@ -58,21 +77,22 @@ function generateSequence() {
 
 function displaySequence() {
     let delay = 0;
-    const container = document.getElementById('container');
     sequence.forEach((item, index) => {
         setTimeout(() => {
             if (symbols.includes(item)) {
-                container.innerHTML = item;
+                document.getElementById('container').innerHTML = item;
+                playSound(item === 'π' ? 'pi' : 'theta');
                 setTimeout(() => {
-                    container.innerHTML = '';
+                    document.getElementById('container').innerHTML = '';
                     if (index === sequence.length - 1) {
                         enableUserInput();
                     }
                 }, 1000);
             } else {
-                container.style.backgroundColor = item;
+                document.getElementById('container').style.backgroundColor = item;
+                playSound(item);
                 setTimeout(() => {
-                    container.style.backgroundColor = 'white';
+                    document.getElementById('container').style.backgroundColor = 'white';
                     if (index === sequence.length - 1) {
                         enableUserInput();
                     }
@@ -93,12 +113,12 @@ function enableUserInput() {
 
 function handleUserInput(event) {
     const button = event.target;
-    const color = button.id.split('-')[1];
+    const color = button.id;
 
-    if (color === 'pi' || color === 'theta') {
-        userSequence.push(color === 'pi' ? 'π' : 'θ');
-    } else {
+    if (symbols.includes(color)) {
         userSequence.push(color);
+    } else {
+        userSequence.push(color.split('-')[1]);
     }
 
     const currentIndex = userSequence.length - 1;
@@ -124,11 +144,17 @@ function checkSequence() {
 }
 
 function startNextRound() {
-    const container = document.getElementById('container');
-    container.style.backgroundColor = 'white';
-    container.innerHTML = '';
+    document.getElementById('container').style.backgroundColor = 'white';
+    document.getElementById('container').innerHTML = '';
     displayCountdown();
     colorButtons.forEach(button => {
         button.removeEventListener('click', handleUserInput);
     });
+}
+
+function playSound(item) {
+    if (sounds[item]) {
+        sounds[item].currentTime = 0; 
+        sounds[item].play();
+    }
 }
