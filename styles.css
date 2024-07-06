@@ -5,8 +5,8 @@ body {
 .container {
     background-image: url(backdrop.jpg);
     background-position: center;
-    background-size: cover; 
-    margin: 130px auto;
+    background-size: cover;     
+    margin: 110px auto;
     background-color: white; 
     position: relative;
     height: 300px;
@@ -24,7 +24,7 @@ body {
     height: 100px;
     width: 100px;
     position: absolute;
-    top: 480px;
+    top: 450px;
     left: 50px;
     border-radius: 10px;
     border: 2px solid black;
