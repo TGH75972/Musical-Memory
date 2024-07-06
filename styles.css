@@ -1,16 +1,26 @@
-body{
+body {
     background-color: black;
 }
-.container{
+
+.container {
+    background-image: url(backdrop.jpg);
+    background-position: center;
+    background-size: cover; 
     margin: 130px auto;
-    background-color: white;
+    background-color: white; 
+    position: relative;
     height: 300px;
     width: 600px;
     border-radius: 10px;
+    text-align: center;
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
 }
 
-#choice-red, #choice-blue, #choice-green, #choice-yellow, #choice-pink, #choice-purple, #pi, #theta{
-    background-color: red;
+#choice-red, #choice-blue, #choice-green, #choice-yellow, #choice-pink, #choice-purple, #pi, #theta {
     height: 100px;
     width: 100px;
     position: absolute;
@@ -20,45 +30,49 @@ body{
     border: 2px solid black;
 }
 
-#choice-blue{
+#choice-red {
+    background-color: red;
+}
+
+#choice-blue {
     background-color: blue;
     left: 200px;
 }
 
-#choice-green{
-    background-color: greenyellow;
+#choice-green {
+    background-color: green;
     left: 350px;
 }
 
-#choice-yellow{
-background-color: yellow;
-left: 500px;
+#choice-yellow {
+    background-color: yellow;
+    left: 500px;
 }
 
-#choice-pink{
- background-color: pink;
- left: 650px;
+#choice-pink {
+    background-color: pink;
+    left: 650px;
 }
 
-#choice-purple{
-background-color: purple;
-left: 800px;
+#choice-purple {
+    background-color: purple;
+    left: 800px;
 }
 
-#pi, #theta{
+#pi, #theta {
     left: 950px;
     background-color: white;
     color: black;
     font-size: 40px;
 }
 
-#theta{
+#theta {
     left: 1100px;
 }
 
-#start{
-    margin-left: 250px;
-    margin-top: 100px;
+#start {
+    margin-left: 10px;
+    margin-top: 10px;
     border-radius: 10px;
     height: 100px;
     font-size: 40px;
@@ -67,6 +81,6 @@ left: 800px;
     background-color: black;
 }
 
-button:hover{
+button:hover {
     cursor: pointer;
 }
