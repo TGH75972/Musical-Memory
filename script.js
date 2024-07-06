@@ -5,28 +5,52 @@ let sequence = [];
 let userSequence = [];
 
 const colorButtons = [
-    document.getElementById('choice-red'),
-    document.getElementById('choice-blue'),
-    document.getElementById('choice-green'),
-    document.getElementById('choice-yellow'),
-    document.getElementById('choice-pink'),
-    document.getElementById('choice-purple'),
-    document.getElementById('pi'),
-    document.getElementById('theta')
+    { button: document.getElementById('choice-red'), color: 'red' },
+    { button: document.getElementById('choice-blue'), color: 'blue' },
+    { button: document.getElementById('choice-green'), color: 'green' },
+    { button: document.getElementById('choice-yellow'), color: 'yellow' },
+    { button: document.getElementById('choice-pink'), color: 'pink' },
+    { button: document.getElementById('choice-purple'), color: 'purple' },
+    { button: document.getElementById('pi'), color: 'pi' },
+    { button: document.getElementById('theta'), color: 'theta' }
 ];
 
 const colorNames = ['red', 'blue', 'green', 'yellow', 'pink', 'purple'];
-const symbols = ['π', 'θ'];
+const symbols = ['pi', 'theta'];
 
 const sounds = {
-    red: new Audio('red.mp3'),
-    blue: new Audio('blue.mp3'),
-    green: new Audio('green.mp3'),
-    yellow: new Audio('yellow.mp3'),
-    pink: new Audio('pink.mp3'),
-    purple: new Audio('purple.mp3'),
-    pi: new Audio('pi.mp3'),
-    theta: new Audio('theta.mp3')
+    red: {
+        color: new Audio('red.mp3'),
+        sound: new Audio('sound.wav')
+    },
+    blue: {
+        color: new Audio('blue.mp3'),
+        sound: new Audio('sound2.mp3')
+    },
+    green: {
+        color: new Audio('green.mp3'),
+        sound: new Audio('sound3.mp3')
+    },
+    yellow: {
+        color: new Audio('yellow.mp3'),
+        sound: new Audio('sound4.mp3')
+    },
+    pink: {
+        color: new Audio('pink.mp3'),
+        sound: new Audio('sound5.mp3')
+    },
+    purple: {
+        color: new Audio('purple.mp3'),
+        sound: new Audio('sound6.mp3')
+    },
+    pi: {
+        color: new Audio('pi.mp3'),
+        sound: new Audio('sound7.mp3')
+    },
+    theta: {
+        color: new Audio('theta.mp3'),
+        sound: new Audio('sound8.mp3')
+    }
 };
 
 function startGame() {
@@ -40,9 +64,9 @@ function displayCountdown() {
     countdown.style.fontFamily = 'Verdana';
     countdown.style.fontSize = '50px';
     countdown.style.color = 'white';
-    countdown.style.backgroundColor = 'black'; // Add black background
-    countdown.style.padding = '10px'; // Add padding
-    countdown.style.borderRadius = '10px'; // Add border radius
+    countdown.style.backgroundColor = 'black';
+    countdown.style.padding = '10px';
+    countdown.style.borderRadius = '10px';
     countdown.innerHTML = '3';
     document.getElementById('container').appendChild(countdown);
 
@@ -66,8 +90,8 @@ function generateSequence() {
     sequence = [];
     let itemPool = [...colorNames];
     if (round > 6) {
-        itemPool = [...colorNames, ...symbols, 'π', 'θ', 'π', 'θ'];
-        round = 1;
+        itemPool = [...colorNames, ...symbols];
+        round = 1; 
     }
     for (let i = 0; i < round; i++) {
         let randomItem = itemPool[Math.floor(Math.random() * itemPool.length)];
@@ -80,8 +104,8 @@ function displaySequence() {
     sequence.forEach((item, index) => {
         setTimeout(() => {
             if (symbols.includes(item)) {
-                document.getElementById('container').innerHTML = item;
-                playSound(item === 'π' ? 'pi' : 'theta');
+                document.getElementById('container').innerHTML = item === 'pi' ? 'π' : 'θ';
+                playSound(item);
                 setTimeout(() => {
                     document.getElementById('container').innerHTML = '';
                     if (index === sequence.length - 1) {
@@ -105,56 +129,63 @@ function displaySequence() {
 
 function enableUserInput() {
     userSequence = [];
-    colorButtons.forEach(button => {
-        button.addEventListener('click', handleUserInput);
+    colorButtons.forEach(({ button, color }) => {
+        button.addEventListener('click', handleButtonClick);
         button.style.fontFamily = 'Verdana';
     });
 }
 
-function handleUserInput(event) {
-    const button = event.target;
-    const color = button.id;
+function handleButtonClick(event) {
+    const color = event.target.id.split('-')[1];
+    userSequence.push(color);
 
-    if (symbols.includes(color)) {
-        userSequence.push(color);
-    } else {
-        userSequence.push(color.split('-')[1]);
-    }
+    playButtonSound(color);
 
     const currentIndex = userSequence.length - 1;
     if (userSequence[currentIndex] !== sequence[currentIndex]) {
-        window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
-        return;
+        window.location.href = 'https://www.youtube.com/watch?v=hB7CDrVnNCs';
+    } else if (userSequence.length === sequence.length) {
+        setTimeout(() => {
+            alert('Good job! Next round.');
+            round++;
+            startNextRound();
+        }, 100);
     }
-
-    if (userSequence.length === sequence.length) {
-        checkSequence();
-    }
-}
-
-function checkSequence() {
-    const isCorrect = userSequence.every((color, index) => color === sequence[index]);
-    if (isCorrect) {
-        alert('Good Job!');
-        round++;
-        startNextRound();
-    } else {
-        window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
-    }
-}
-
-function startNextRound() {
-    document.getElementById('container').style.backgroundColor = 'white';
-    document.getElementById('container').innerHTML = '';
-    displayCountdown();
-    colorButtons.forEach(button => {
-        button.removeEventListener('click', handleUserInput);
-    });
 }
 
 function playSound(item) {
     if (sounds[item]) {
-        sounds[item].currentTime = 0; 
-        sounds[item].play();
+        const colorSound = sounds[item].color;
+        const soundSound = sounds[item].sound;
+
+        colorSound.currentTime = 0;
+        soundSound.currentTime = 0;
+
+        colorSound.play();
+        soundSound.play();
     }
+}
+
+function playButtonSound(color) {
+    if (sounds[color] && sounds[color].sound) {
+        const sound = sounds[color].sound;
+        sound.currentTime = 0;
+        sound.play();
+    }
+}
+
+function startNextRound() {
+    userSequence = [];
+    colorButtons.forEach(({ button }) => {
+        button.removeEventListener('click', handleButtonClick);
+    });
+    generateSequence();
+    displaySequence();
+}
+
+function resetGame() {
+    round = 1;
+    sequence = [];
+    userSequence = [];
+    document.getElementById('start').style.display = 'block';
 }
